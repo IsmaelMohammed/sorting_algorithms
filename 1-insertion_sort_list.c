@@ -1,56 +1,62 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "sort.h"
 
 /**
- * swap - function swaping two nodes
- * @list: pointer to first item in a list
- * @node1: pointer to node1
- * @node2: pointer to node2
+ * insertion_sort_list - implementation of insertion sort
+ * @list: doubly linked list to be sorted
  *
- * Return: nothing
+ * Return: void
  */
-
-void swap(listint_t **list, listint_t *node1, listint_t *node2)
+void insertion_sort_list(listint_t **list)
 {
-        node1->next = node2->next;
-        if (node1->next)
-        {
-                node1->next->prev = node1;
-        }
-        node2->next = node1;
-        node2->prev = node1->prev;
-        node1->prev = node2;
-        if (node2->prev)
-        {
-                node2->prev->next = node2;
-        }
-        else
-        {
-                *list = node2;
-        }
+	listint_t *cursor = NULL, *cursor_2 = NULL;
+	int first, second;
+
+	if (list == NULL)
+		return;
+	if ((*list)->next == NULL)
+		return;
+
+	cursor = *list;
+	while (cursor != NULL)
+	{
+		if (cursor->prev != NULL)
+		{
+			cursor_2 = cursor;
+			cursor = cursor->next;
+			while (cursor_2->prev != NULL)
+			{
+				first = (cursor_2->prev)->n;
+				second = cursor_2->n;
+				if (first <= second)
+					break;
+				swap_nodes(cursor_2->prev, cursor_2);
+				if (cursor_2->prev == NULL)
+					*list = cursor_2;
+				print_list(*list);
+			}
+		}
+		else
+			cursor = cursor->next;
+	}
 }
 
 /**
- * insertion_sort_list - sorting list by insertion algorithm
- * @list: pointer to first item in a list
+ * swap_nodes - swap adjacent nodes of a doubly linked list
+ * @first: first node
+ * @second: second node
  *
- * Return: Nothing
+ * Return: void
  */
-
-void insertion_sort_list(listint_t **list)
+void swap_nodes(listint_t *first, listint_t *second)
 {
-        listint_t *node;
-
-        if (!list || !*list || !(*list)->next)
-                return;
-
-        node = (*list)->next;
-        while (node)
-        {
-                while (node->prev && node->n < node->prev->n)
-                {
-                        swap(list, node->prev, node);
-                        print_list(*list);
-                }
-                node = node->next;
-        }
+	if (first->prev != NULL)
+		(first->prev)->next = second;
+	if (second->next != NULL)
+		(second->next)->prev = first;
+	second->prev = first->prev;
+	first->prev = second;
+	first->next = second->next;
+	second->next = first;
 }

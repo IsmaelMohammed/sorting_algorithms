@@ -1,38 +1,40 @@
+#include <stdlib.h>
 #include "sort.h"
 
-
 /**
- *selection_sort - a function to sort an array in ascending order
- *@array: pointer to the first item in array
- *@size: the size of the array
+ * selection_sort - implementation of selection sort
+ * @array: array to be sorted
+ * @size: size of the array
  *
- *Return: Nothing
+ * Return: Void
  */
-
 void selection_sort(int *array, size_t size)
 {
 	size_t i, j;
-	size_t  min, tmp;
+	int smallest, index, temp, flag = 0;
 
 	if (size < 2)
 		return;
-
-	for (i = 0; i < size - 1; i++)
+	for (i = 0; i < size; i++)
 	{
-		min = i;
-		for (j = i + 1; j < size; j++)
+		smallest = array[i];
+		index = i;
+		for (j = i; j < size; j++)
 		{
-			if (array[j] < array[min])
+			if (array[j] < smallest)
 			{
-				min = j;
+				smallest = array[j];
+				index = j;
+				flag = 1;
 			}
 		}
-		if (min != i)
+		if (flag)
 		{
-			tmp = array[min];
-			array[min] = array[i];
-			array[i] = tmp;
+			temp = array[i];
+			array[i] = smallest;
+			array[index] = temp;
 			print_array(array, size);
+			flag = 0;
 		}
 	}
 }

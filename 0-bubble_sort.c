@@ -1,42 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "sort.h"
 
-/**
- * swap: swap array elements
- * @xp: ptr to array element
- * @yp: prt to array element
- * Return: void
- */
-void swap(int *xp, int *yp)
-{
-  int temp = *xp;
-  *xp = *yp;
-  *yp = temp;
-}
 
 /**
- * bubble_sort - sort an array of integers asending order
- * @array: input array
- * @size: size of array
+ * bubble_sort - Implementation of bubble sort
+ * @array: array to be sorted
+ * @size: size of the array (number of elements)
+ *
+ * Return: void
  */
 void bubble_sort(int *array, size_t size)
 {
 	size_t i, j;
-	char isSorted;
+	int temp;
 
-	for (i = 1; i < size; i++)
+	for (i = 0; i < size && size >= 2; i++)
 	{
-		isSorted = 1;
 		for (j = 0; j < size - 1; j++)
 		{
 			if (array[j] > array[j + 1])
 			{
-				swap(&array[j], &array[j + 1]);
-				isSorted = 0;
+				temp = array[j];
+				array[j] = array[j + 1];
+				array[j + 1] = temp;
 				print_array(array, size);
 			}
 		}
-		/* if no two elements were swapped by inner loop, then break */
-		if (isSorted == 1)
-			break;
 	}
 }
